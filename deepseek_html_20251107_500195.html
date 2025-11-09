@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社会化程度综合测评</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff7eb9;
+            --secondary-color: #ff758c;
+            --accent-color: #ff6b6b;
+            --light-color: #fff5f7;
+            --text-color: #5a3d3d;
+            --card-shadow: 0 8px 30px rgba(255, 119, 140, 0.15);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffd1dc 0%, #ffb6c1 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            margin: 20px 0 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .quiz-container {
+            padding: 30px;
+        }
+        
+        .question-card {
+            background: var(--light-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #ffe4e9;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(255, 126, 185, 0.1);
+        }
+        
+        .option-circle {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #f8bbd0;
+            margin-right: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .option.selected .option-circle {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+        }
+        
+        .option.selected .option-circle::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+        
+        .option-text {
+            flex: 1;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-prev {
+            background: #fff0f5;
+            color: var(--text-color);
+        }
+        
+        .btn-prev:hover:not(:disabled) {
+            background: #ffe4ec;
+        }
+        
+        .btn-next, .btn-result {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-next:hover, .btn-result:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-container {
+            padding: 30px;
+            display: none;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+        
+        .score-level {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .score-description {
+            color: #8a6d6d;
+            margin-bottom: 20px;
+        }
+        
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        #radarChart {
+            max-width: 400px;
+            max-height: 400px;
+        }
+        
+        .dimensions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .dimension-card {
+            background: var(--light-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dimension-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .dimension-score {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .dimension-bar {
+            height: 8px;
+            background: #f8bbd0;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .dimension-progress {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+        }
+        
+        .dimension-analysis {
+            font-size: 0.9rem;
+            color: #7a5c5c;
+        }
+        
+        .suggestions {
+            background: #fff5f7;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+        
+        .suggestions h3 {
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+        
+        .suggestion-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .suggestion-item::before {
+            content: '•';
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .restart-btn {
+            display: block;
+            margin: 30px auto 0;
+            background: var(--accent-color);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 15px;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .description {
+                font-size: 0.9rem;
+            }
+            
+            .quiz-container {
+                padding: 20px;
+            }
+            
+            .question-text {
+                font-size: 1.1rem;
+            }
+            
+            .dimensions-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+            
+            #radarChart {
+                max-width: 300px;
+                max-height: 300px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .score-display {
+                font-size: 2rem;
+            }
+            
+            .score-level {
+                font-size: 1.3rem;
+            }
+            
+            #radarChart {
+                max-width: 250px;
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>社会化程度综合测评</h1>
+            <p class="description">评估您的社会适应、人际互动和社会参与能力，获取个性化的发展建议</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+        </header>
+        
+        <div class="quiz-container" id="quizContainer">
+            <div class="question-card">
+                <div class="question-text" id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+            <div class="navigation">
+                <button class="btn-prev" id="prevBtn" disabled>上一题</button>
+                <button class="btn-next" id="nextBtn">下一题</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="resultContainer">
+            <div class="result-header">
+                <h2>测评结果</h2>
+                <div class="score-display" id="totalScore">0</div>
+                <div class="score-level" id="scoreLevel">正在分析...</div>
+                <p class="score-description" id="scoreDescription"></p>
+            </div>
+            
+            <div class="chart-container">
+                <h3>能力维度分析</h3>
+                <canvas id="radarChart" width="400" height="400"></canvas>
+            </div>
+            
+            <h3>各维度详细分析</h3>
+            <div class="dimensions-container" id="dimensionsContainer"></div>
+            
+            <div class="suggestions">
+                <h3>个性化提升建议</h3>
+                <div id="suggestionsList"></div>
+            </div>
+            
+            <button class="restart-btn" id="restartBtn">重新开始测评</button>
+        </div>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 维度一：社交适应与舒适度
+            { text: "在陌生的社交场合中，我能感到自然和放松。", dimension: 0 },
+            { text: "我能轻松地与陌生人开启对话并建立初步联系。", dimension: 0 },
+            { text: "参加聚会或团体活动对我来说是一种享受，而非负担。", dimension: 0 },
+            { text: "我能够在不熟悉的环境中迅速找到自己的角色和位置。", dimension: 0 },
+            { text: "面对社交中的小尴尬或冷场，我能轻松化解。", dimension: 0 },
+            
+            // 维度二：沟通与表达能力
+            { text: "我能够清晰、有条理地表达自己的观点和想法。", dimension: 1 },
+            { text: "在交谈中，我是一个好的倾听者，能真正理解对方的意思和情绪。", dimension: 1 },
+            { text: "我能够根据不同的对象和场合，调整我的说话方式和内容。", dimension: 1 },
+            { text: "当与他人意见不合时，我能有效地进行沟通和协商，而非回避或激烈争论。", dimension: 1 },
+            { text: "我敢于在小组讨论或会议中发表自己的看法。", dimension: 1 },
+            
+            // 维度三：共情与人际理解
+            { text: "我能敏锐地察觉到他人的情绪变化。", dimension: 2 },
+            { text: "我能够理解并体谅与自己背景、观点不同的人。", dimension: 2 },
+            { text: "当朋友向我倾诉烦恼时，我能感同身受并提供情感支持。", dimension: 2 },
+            { text: "在做出可能影响他人的决定前，我会主动考虑他们的感受。", dimension: 2 },
+            { text: "我能够欣赏他人的优点，并真诚地给予赞美。", dimension: 2 },
+            
+            // 维度四：合作与团队协作
+            { text: "在团队中，我乐于与他人协作，共同完成任务。", dimension: 3 },
+            { text: "我能清晰地理解团队目标，并明确自己在其中的责任。", dimension: 3 },
+            { text: "当团队发生冲突时，我能够扮演调解或建设性的角色。", dimension: 3 },
+            { text: "我愿意为了团队的整体利益，而适当牺牲个人利益。", dimension: 3 },
+            { text: "我能公平地看待团队成员的贡献，不居功，不诿过。", dimension: 3 },
+            
+            // 维度五：社会规则与情境感知
+            { text: "我能够准确地理解并遵守不同社会情境下的潜规则（如着装要求、沟通礼仪）。", dimension: 4 },
+            { text: "我对自己给他人留下的印象有比较清晰的认知。", dimension: 4 },
+            { text: "在社交媒体上发布内容时，我会考虑其可能带来的社会影响。", dimension: 4 },
+            { text: "我能够识别出他人话语或行为中的隐含意图。", dimension: 4 },
+            { text: "我知道如何在尊重他人的前提下，维护自己的正当权益。", dimension: 4 },
+            
+            // 维度六：社会网络与支持系统
+            { text: "我拥有一个可以深入交流想法和感受的亲密朋友网络（至少3-5人）。", dimension: 5 },
+            { text: "当我遇到困难时，我知道可以向谁求助，并能实际地获得支持。", dimension: 5 },
+            { text: "我会有意识地维护和经营我的人际关系网。", dimension: 5 },
+            { text: "我乐于为朋友提供帮助，并在他们需要时伸出援手。", dimension: 5 },
+            { text: "我的人际圈多元化，包含来自不同领域、拥有不同背景的朋友。", dimension: 5 }
+        ];
+
+        // 维度名称和描述
+        const dimensions = [
+            { name: "社交适应", description: "评估您在陌生环境中的适应能力和社交舒适度" },
+            { name: "沟通表达", description: "评估您的表达清晰度、倾听能力和沟通技巧" },
+            { name: "共情理解", description: "评估您理解他人情绪和观点的能力" },
+            { name: "团队协作", description: "评估您在团队中的协作精神和解决冲突的能力" },
+            { name: "情境感知", description: "评估您对社会规则的理解和情境适应能力" },
+            { name: "社会网络", description: "评估您的人际网络广度和支持系统质量" }
+        ];
+
+        // 选项
+        const options = [
+            { text: "总是如此", value: 5 },
+            { text: "经常如此", value: 4 },
+            { text: "有时如此", value: 3 },
+            { text: "很少如此", value: 2 },
+            { text: "几乎从不", value: 1 }
+        ];
+
+        // 测评结果等级
+        const resultLevels = [
+            { min: 130, max: 150, level: "高度社会化", description: "您具备卓越的社会适应和人际交往能力。您在社会环境中如鱼得水，能够轻松建立广泛而深刻的社会联系，是团队中不可或缺的粘合剂和推动者。" },
+            { min: 106, max: 129, level: "良好社会化", description: "您在社会功能的大部分方面表现良好，拥有健康的人际关系和一定的社会影响力。在某些特定情境或维度上，仍有提升空间，能让您的社会效能更上一层楼。" },
+            { min: 80, max: 105, level: "中度社会化", description: "您具备基本的社会功能，但在舒适度、技巧或深度上存在一些挑战。您可能在某些方面感到得心应手，而在另一些方面则感到力不从心。这是大多数人所在的区间，也是有意识提升后收获最大的区间。" },
+            { min: 30, max: 79, level: "社会化程度待发展", description: "您在社会互动中可能经常感到困难、耗能或误解。您的社会支持系统可能较为薄弱，这会让您在面对生活和工作挑战时感到更大的压力。但请放心，社会化能力是可以通过刻意练习显著提升的。" }
+        ];
+
+        // 各维度的建议
+        const dimensionSuggestions = [
+            // 维度一：社交适应与舒适度
+            {
+                high: "您的核心优势在于'社会勇气'。您不畏惧陌生环境，拥有很强的心理弹性。建议：善用此优势，主动承担需要对外联络或开拓新局面的任务，成为团队中的'先锋'。",
+                low: "您在陌生社交中容易感到焦虑和压力，可能倾向于回避。提升建议：1.渐进暴露法：从压力最小的社交开始逐步增加难度；2.转变心态：将'我要表现完美'转变为'我对他感到好奇'；3.提前准备：参加活动前准备几个通用话题。"
+            },
+            // 维度二：沟通与表达能力
+            {
+                high: "您是清晰的表达者和耐心的倾听者，沟通效率高。建议：在团队中主动扮演'信息澄清者'和'总结者'的角色，提升团队整体沟通质量。",
+                low: "您可能在表达清晰度、倾听深度或冲突沟通上遇到挑战。提升建议：1.练习结构化表达：尝试使用'PREP'结构；2.积极倾听：复述对方观点确认理解；3.学习'非暴力沟通'：关注事实、感受、需求和请求。"
+            },
+            // 维度三：共情与人际理解
+            {
+                high: "您拥有强大的共情能力，能让他人感到被理解和温暖。建议：您非常适合从事管理、辅导、教育、客服等需要深度理解他人的工作。",
+                low: "您可能更关注事而非人，对情绪的觉察不够敏锐。提升建议：1.情绪词汇库：学习使用更丰富的情绪词汇；2.换位思考练习：在评价他人行为前思考对方的处境和感受；3.多观察非语言信号：注意他人的表情、语气和姿态。"
+            },
+            // 维度四：合作与团队协作
+            {
+                high: "您是天生的团队合作者，可靠、有大局观。建议：积极争取成为项目负责人或团队协调者，您的协作精神能极大提升团队凝聚力。",
+                low: "您可能更习惯于独立工作，或在团队中感到定位不清、难以处理冲突。提升建议：1.明确角色与目标：确认自己的角色、责任和团队目标；2.练习给予和接受反馈；3.看到集体智慧：在讨论中肯定和整合他人的想法。"
+            },
+            // 维度五：社会规则与情境感知
+            {
+                high: "您拥有很高的'社会智商'，知进退，懂分寸。建议：您在处理对外关系、公共关系等复杂社交场景中具有天然优势。",
+                low: "您可能有时会觉得'看不懂'某些社交暗示，或无意中冒犯他人。提升建议：1.做个'社会人类学家'：观察总结不同场合的'游戏规则'；2.寻找一位'导师'：观察学习社交得体的朋友；3.事后复盘：回顾哪些言行得体，哪些欠妥。"
+            },
+            // 维度六：社会网络与支持系统
+            {
+                high: "您拥有强大的社会安全网，这为您提供了丰富的信息、资源和情感支持。建议：有意识地将您不同圈子的朋友连接起来，创造更大的网络价值。",
+                low: "您的社会关系可能较为疏离或浅层，在需要时感觉无人可依。提升建议：1.主动出击：联系久未联系但感觉投缘的朋友；2.深度联结：进行适度的自我暴露，分享个人困惑或感受；3.创造价值：思考你能为朋友网络提供什么价值。"
+            }
+        ];
+
+        // 全局变量
+        let currentQuestion = 0;
+        let answers = new Array(questions.length).fill(0);
+        let dimensionScores = new Array(dimensions.length).fill(0);
+        
+        // DOM元素
+        const quizContainer = document.getElementById('quizContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const totalScore = document.getElementById('totalScore');
+        const scoreLevel = document.getElementById('scoreLevel');
+        const scoreDescription = document.getElementById('scoreDescription');
+        const dimensionsContainer = document.getElementById('dimensionsContainer');
+        const suggestionsList = document.getElementById('suggestionsList');
+        const restartBtn = document.getElementById('restartBtn');
+        const radarChartCanvas = document.getElementById('radarChart');
+        
+        // 初始化测评
+        function initQuiz() {
+            showQuestion();
+            updateProgressBar();
+        }
+        
+        // 显示当前题目
+        function showQuestion() {
+            questionText.textContent = `${currentQuestion + 1}. ${questions[currentQuestion].text}`;
+            
+            optionsContainer.innerHTML = '';
+            options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = `option ${answers[currentQuestion] === option.value ? 'selected' : ''}`;
+                optionElement.innerHTML = `
+                    <div class="option-circle"></div>
+                    <div class="option-text">${option.text}</div>
+                `;
+                optionElement.addEventListener('click', () => {
+                    selectOption(option.value);
+                    // 自动进入下一题
+                    setTimeout(() => {
+                        nextQuestion();
+                    }, 300);
+                });
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // 更新按钮状态
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.textContent = '查看结果';
+                nextBtn.className = 'btn-result';
+            } else {
+                nextBtn.textContent = '下一题';
+                nextBtn.className = 'btn-next';
+            }
+        }
+        
+        // 选择选项
+        function selectOption(value) {
+            answers[currentQuestion] = value;
+            showQuestion();
+        }
+        
+        // 更新进度条
+        function updateProgressBar() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${Math.round(progress)}%`;
+        }
+        
+        // 下一题
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+                updateProgressBar();
+            } else {
+                // 最后一题，显示结果
+                calculateResults();
+                showResults();
+            }
+        }
+        
+        // 上一题
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+                updateProgressBar();
+            }
+        }
+        
+        // 计算分数
+        function calculateResults() {
+            // 重置维度分数
+            dimensionScores = new Array(dimensions.length).fill(0);
+            const dimensionCounts = new Array(dimensions.length).fill(0);
+            
+            // 计算每个维度的总分和题目数量
+            questions.forEach((question, index) => {
+                dimensionScores[question.dimension] += answers[index];
+                dimensionCounts[question.dimension]++;
+            });
+            
+            // 计算每个维度的平均分
+            for (let i = 0; i < dimensions.length; i++) {
+                if (dimensionCounts[i] > 0) {
+                    dimensionScores[i] = Math.round(dimensionScores[i] / dimensionCounts[i] * 10) / 10;
+                }
+            }
+        }
+        
+        // 绘制雷达图
+        function drawRadarChart() {
+            const ctx = radarChartCanvas.getContext('2d');
+            const centerX = radarChartCanvas.width / 2;
+            const centerY = radarChartCanvas.height / 2;
+            const radius = Math.min(centerX, centerY) * 0.8;
+            const angle = (2 * Math.PI) / dimensions.length;
+            
+            // 清除画布
+            ctx.clearRect(0, 0, radarChartCanvas.width, radarChartCanvas.height);
+            
+            // 绘制网格线
+            ctx.strokeStyle = 'rgba(255, 126, 185, 0.2)';
+            ctx.lineWidth = 1;
+            
+            // 绘制5个同心圆
+            for (let i = 1; i <= 5; i++) {
+                ctx.beginPath();
+                const currentRadius = radius * (i / 5);
+                for (let j = 0; j <= dimensions.length; j++) {
+                    const x = centerX + currentRadius * Math.cos(angle * j - Math.PI / 2);
+                    const y = centerY + currentRadius * Math.sin(angle * j - Math.PI / 2);
+                    if (j === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+            
+            // 绘制维度线
+            ctx.strokeStyle = 'rgba(255, 126, 185, 0.4)';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i < dimensions.length; i++) {
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                const x = centerX + radius * Math.cos(angle * i - Math.PI / 2);
+                const y = centerY + radius * Math.sin(angle * i - Math.PI / 2);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                // 绘制维度标签
+                ctx.fillStyle = 'var(--text-color)';
+                ctx.font = '14px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                const labelRadius = radius + 20;
+                const labelX = centerX + labelRadius * Math.cos(angle * i - Math.PI / 2);
+                const labelY = centerY + labelRadius * Math.sin(angle * i - Math.PI / 2);
+                
+                ctx.fillText(dimensions[i].name, labelX, labelY);
+            }
+            
+            // 绘制数据多边形
+            ctx.fillStyle = 'rgba(255, 126, 185, 0.3)';
+            ctx.strokeStyle = 'var(--primary-color)';
+            ctx.lineWidth = 2;
+            
+            ctx.beginPath();
+            for (let i = 0; i < dimensions.length; i++) {
+                const valueRadius = radius * (dimensionScores[i] / 5);
+                const x = centerX + valueRadius * Math.cos(angle * i - Math.PI / 2);
+                const y = centerY + valueRadius * Math.sin(angle * i - Math.PI / 2);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+                
+                // 绘制数据点
+                ctx.fillStyle = 'var(--primary-color)';
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.fillStyle = 'rgba(255, 126, 185, 0.3)';
+            }
+            
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // 绘制中心点
+            ctx.fillStyle = 'var(--accent-color)';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        
+        // 显示结果
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            // 计算总分
+            const total = answers.reduce((sum, answer) => sum + answer, 0);
+            totalScore.textContent = total;
+            
+            // 确定等级
+            const level = resultLevels.find(l => total >= l.min && total <= l.max);
+            scoreLevel.textContent = level.level;
+            scoreDescription.textContent = level.description;
+            
+            // 绘制雷达图
+            drawRadarChart();
+            
+            // 显示各维度分数
+            dimensionsContainer.innerHTML = '';
+            dimensions.forEach((dimension, index) => {
+                const score = dimensionScores[index];
+                const dimensionCard = document.createElement('div');
+                dimensionCard.className = 'dimension-card';
+                
+                const progressPercent = (score / 5) * 100;
+                
+                dimensionCard.innerHTML = `
+                    <div class="dimension-title">
+                        <span>${dimension.name}</span>
+                        <span class="dimension-score">${score}/5</span>
+                    </div>
+                    <div class="dimension-bar">
+                        <div class="dimension-progress" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div class="dimension-analysis">
+                        ${dimension.description}
+                    </div>
+                `;
+                
+                dimensionsContainer.appendChild(dimensionCard);
+            });
+            
+            // 显示建议
+            suggestionsList.innerHTML = '';
+            dimensions.forEach((dimension, index) => {
+                const score = dimensionScores[index];
+                const suggestion = score >= 3.5 ? 
+                    dimensionSuggestions[index].high : 
+                    dimensionSuggestions[index].low;
+                
+                const suggestionItem = document.createElement('div');
+                suggestionItem.className = 'suggestion-item';
+                suggestionItem.innerHTML = `<strong>${dimension.name}:</strong> ${suggestion}`;
+                
+                suggestionsList.appendChild(suggestionItem);
+            });
+        }
+        
+        // 重新开始测评
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = new Array(questions.length).fill(0);
+            dimensionScores = new Array(dimensions.length).fill(0);
+            
+            resultContainer.style.display = 'none';
+            quizContainer.style.display = 'block';
+            
+            showQuestion();
+            updateProgressBar();
+        }
+        
+        // 事件监听
+        prevBtn.addEventListener('click', prevQuestion);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', restartQuiz);
+        
+        // 初始化
+        initQuiz();
+    </script>
+</body>
+</html>
