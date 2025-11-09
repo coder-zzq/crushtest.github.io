@@ -2,9 +2,11 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>社会化程度综合测评</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入normalize.css进行样式重置 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <style>
         :root {
             --primary-color: #ff7eb9;
@@ -21,6 +23,12 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
         }
         
         body {
@@ -87,11 +95,13 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
         }
         
         h1 {
             font-size: 1.8rem;
             margin-bottom: 10px;
+            padding-top: 10px; /* 为标题添加顶部内边距，避免被遮挡 */
         }
         
         .description {
@@ -216,6 +226,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
+            -webkit-appearance: none;
         }
         
         .btn-prev {
@@ -376,10 +387,12 @@
             
             header {
                 padding: 20px 15px;
+                padding-top: 50px; /* 增加顶部内边距，为小红书链接留出空间 */
             }
             
             h1 {
                 font-size: 1.5rem;
+                padding-top: 0; /* 在移动端移除标题的内边距 */
             }
             
             .description {
@@ -493,6 +506,17 @@
             
             .suggestions {
                 padding: 20px;
+            }
+        }
+        
+        /* 针对非常小的屏幕进一步优化 */
+        @media (max-width: 360px) {
+            header {
+                padding-top: 60px; /* 进一步增加顶部内边距 */
+            }
+            
+            .xiaohongshu-link span {
+                max-width: 100px;
             }
         }
     </style>
