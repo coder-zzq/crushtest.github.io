@@ -363,9 +363,11 @@
             font-size: 1.1rem;
         }
         
+        /* 移动端优化 */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
+                align-items: flex-start;
             }
             
             .container {
@@ -373,7 +375,7 @@
             }
             
             header {
-                padding: 20px;
+                padding: 20px 15px;
             }
             
             h1 {
@@ -385,11 +387,12 @@
             }
             
             .quiz-container {
-                padding: 20px;
+                padding: 20px 15px;
             }
             
             .question-text {
                 font-size: 1.1rem;
+                margin-bottom: 20px;
             }
             
             .dimensions-container {
@@ -405,6 +408,7 @@
                 max-height: 300px;
             }
             
+            /* 小红书链接优化 */
             .xiaohongshu-corner {
                 top: 15px;
                 right: 15px;
@@ -413,26 +417,31 @@
             .xiaohongshu-link {
                 padding: 8px 14px;
                 font-size: 0.85rem;
+                gap: 6px;
             }
             
+            /* 在小屏幕上显示作者名字 */
             .xiaohongshu-link span {
-                display: none;
+                display: inline;
             }
             
-            .xiaohongshu-link {
-                padding: 10px;
-                border-radius: 50%;
-                width: 44px;
-                height: 44px;
-                justify-content: center;
+            .xiaohongshu-custom-icon {
+                width: 20px;
+                height: 20px;
             }
             
-            .xiaohongshu-icon {
-                margin: 0;
+            .result-container {
+                padding: 20px 15px;
             }
-        }
-        
-        @media (max-width: 480px) {
+            
+            .score-display {
+                font-size: 2.2rem;
+            }
+            
+            .score-level {
+                font-size: 1.3rem;
+            }
+            
             .navigation {
                 flex-direction: column;
                 gap: 10px;
@@ -441,25 +450,49 @@
             button {
                 width: 100%;
             }
+        }
+        
+        @media (max-width: 480px) {
+            .xiaohongshu-link {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            
+            .xiaohongshu-link span {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .xiaohongshu-custom-icon {
+                width: 18px;
+                height: 18px;
+            }
+            
+            .question-card {
+                padding: 20px 15px;
+            }
             
             .score-display {
                 font-size: 2rem;
             }
             
             .score-level {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
             
-            .xiaohongshu-custom-icon {
-			    width: 1.2rem; /* 调整图标大小以适应链接 */
-			    height: 1.2rem;
-			    margin-right: 8px; /* 与文字间距 */
-			    vertical-align: middle; /* 垂直对齐 */
-			}
-			
             #radarChart {
                 max-width: 250px;
                 max-height: 250px;
+            }
+            
+            .dimension-card {
+                padding: 15px;
+            }
+            
+            .suggestions {
+                padding: 20px;
             }
         }
     </style>
@@ -468,8 +501,8 @@
     <div class="container">
         <!-- 小红书入口 -->
         <div class="xiaohongshu-corner">
-            <a href="https://xhslink.com/m/4fdn9coKvxs" target="_blank" class="xiaohongshu-link" title="访问作者小红书主页1">
-	            <img src="./xiaohongshu.svg" alt="小红书" style="width: 25px;" class="xiaohongshu-custom-icon">
+            <a href="https://xhslink.com/m/4fdn9coKvxs" target="_blank" class="xiaohongshu-link" title="访问作者小红书主页">
+                <img src="./xiaohongshu.svg" alt="小红书" class="xiaohongshu-custom-icon">
                 <span>本站作者：@破局之道</span> 
             </a>
         </div>
