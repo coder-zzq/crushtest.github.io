@@ -2,9 +2,11 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>社会化程度综合测评</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入normalize.css进行样式重置 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <style>
         :root {
             --primary-color: #ff7eb9;
@@ -21,6 +23,12 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
         }
         
         body {
@@ -42,6 +50,44 @@
             box-shadow: var(--card-shadow);
             overflow: hidden;
             transition: var(--transition);
+            position: relative;
+        }
+        
+        /* 小红书链接样式 */
+        .xiaohongshu-corner {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .xiaohongshu-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            color: #ff2442;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 36, 66, 0.2);
+        }
+        
+        .xiaohongshu-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 36, 66, 0.25);
+            background: white;
+            color: #ff2442;
+        }
+        
+        .xiaohongshu-icon {
+            color: #ff2442;
+            font-size: 1.2rem;
         }
         
         header {
@@ -49,11 +95,13 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
         }
         
         h1 {
             font-size: 1.8rem;
             margin-bottom: 10px;
+            padding-top: 10px; /* 为标题添加顶部内边距，避免被遮挡 */
         }
         
         .description {
@@ -178,6 +226,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
+            -webkit-appearance: none;
         }
         
         .btn-prev {
@@ -325,9 +374,11 @@
             font-size: 1.1rem;
         }
         
+        /* 移动端优化 */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
+                align-items: flex-start;
             }
             
             .container {
@@ -335,11 +386,13 @@
             }
             
             header {
-                padding: 20px;
+                padding: 20px 15px;
+                padding-top: 50px; /* 增加顶部内边距，为小红书链接留出空间 */
             }
             
             h1 {
                 font-size: 1.5rem;
+                padding-top: 0; /* 在移动端移除标题的内边距 */
             }
             
             .description {
@@ -347,11 +400,12 @@
             }
             
             .quiz-container {
-                padding: 20px;
+                padding: 20px 15px;
             }
             
             .question-text {
                 font-size: 1.1rem;
+                margin-bottom: 20px;
             }
             
             .dimensions-container {
@@ -366,9 +420,41 @@
                 max-width: 300px;
                 max-height: 300px;
             }
-        }
-        
-        @media (max-width: 480px) {
+            
+            /* 小红书链接优化 */
+            .xiaohongshu-corner {
+                top: 15px;
+                right: 15px;
+            }
+            
+            .xiaohongshu-link {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+                gap: 6px;
+            }
+            
+            /* 在小屏幕上显示作者名字 */
+            .xiaohongshu-link span {
+                display: inline;
+            }
+            
+            .xiaohongshu-custom-icon {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .result-container {
+                padding: 20px 15px;
+            }
+            
+            .score-display {
+                font-size: 2.2rem;
+            }
+            
+            .score-level {
+                font-size: 1.3rem;
+            }
+            
             .navigation {
                 flex-direction: column;
                 gap: 10px;
@@ -377,24 +463,74 @@
             button {
                 width: 100%;
             }
+        }
+        
+        @media (max-width: 480px) {
+            .xiaohongshu-link {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            
+            .xiaohongshu-link span {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .xiaohongshu-custom-icon {
+                width: 18px;
+                height: 18px;
+            }
+            
+            .question-card {
+                padding: 20px 15px;
+            }
             
             .score-display {
                 font-size: 2rem;
             }
             
             .score-level {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
             
             #radarChart {
                 max-width: 250px;
                 max-height: 250px;
             }
+            
+            .dimension-card {
+                padding: 15px;
+            }
+            
+            .suggestions {
+                padding: 20px;
+            }
+        }
+        
+        /* 针对非常小的屏幕进一步优化 */
+        @media (max-width: 360px) {
+            header {
+                padding-top: 60px; /* 进一步增加顶部内边距 */
+            }
+            
+            .xiaohongshu-link span {
+                max-width: 100px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 小红书入口 -->
+        <div class="xiaohongshu-corner">
+            <a href="https://xhslink.com/m/4fdn9coKvxs" target="_blank" class="xiaohongshu-link" title="访问作者小红书主页">
+                <img src="./xiaohongshu.svg" alt="小红书" class="xiaohongshu-custom-icon" style="width: 25px;user-select: auto;">
+                <span>本站作者：@破局之道</span> 
+            </a>
+        </div>
+        
         <header>
             <h1>社会化程度综合测评</h1>
             <p class="description">评估您的社会适应、人际互动和社会参与能力，获取个性化的发展建议</p>
@@ -694,6 +830,15 @@
                 }
                 ctx.closePath();
                 ctx.stroke();
+                
+                // 添加刻度标签
+                if (i === 5) {
+                    ctx.fillStyle = 'var(--text-color)';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(i.toString(), centerX, centerY - currentRadius - 10);
+                }
             }
             
             // 绘制维度线
@@ -737,18 +882,35 @@
                 } else {
                     ctx.lineTo(x, y);
                 }
-                
-                // 绘制数据点
-                ctx.fillStyle = 'var(--primary-color)';
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.fillStyle = 'rgba(255, 126, 185, 0.3)';
             }
+            // 闭合多边形
+            const firstValueRadius = radius * (dimensionScores[0] / 5);
+            const firstX = centerX + firstValueRadius * Math.cos(angle * 0 - Math.PI / 2);
+            const firstY = centerY + firstValueRadius * Math.sin(angle * 0 - Math.PI / 2);
+            ctx.lineTo(firstX, firstY);
             
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
+            
+            // 绘制数据点
+            for (let i = 0; i < dimensions.length; i++) {
+                const valueRadius = radius * (dimensionScores[i] / 5);
+                const x = centerX + valueRadius * Math.cos(angle * i - Math.PI / 2);
+                const y = centerY + valueRadius * Math.sin(angle * i - Math.PI / 2);
+                
+                ctx.fillStyle = 'var(--primary-color)';
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // 添加数据标签
+                ctx.fillStyle = 'var(--accent-color)';
+                ctx.font = 'bold 14px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(dimensionScores[i].toFixed(1), x, y - 15);
+            }
             
             // 绘制中心点
             ctx.fillStyle = 'var(--accent-color)';
