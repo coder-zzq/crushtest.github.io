@@ -68,7 +68,7 @@
         
         .author-button {
             position: absolute;
-            top: 5px; /* 增加与顶部的距离 */
+            top: 8px; /* 增加与顶部的距离 */
             right: 8px; /* 增加与右侧的距离 */
             background-color: rgba(255, 255, 255, 0.9);
             color: #ff2442;
@@ -319,6 +319,8 @@
             display: flex;
             justify-content: center;
             margin: 20px 0 30px;
+            flex-wrap: wrap;
+            gap: 5px;
         }
         
         .step {
@@ -329,9 +331,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 10px;
             font-weight: bold;
             color: white;
+            flex-shrink: 0;
         }
         
         .step.active {
@@ -377,6 +379,29 @@
             
             header {
                 padding: 35px 0 25px; /* 移动设备上调整内边距 */
+            }
+            
+            .step-indicator {
+                gap: 4px;
+                margin: 15px 0 25px;
+            }
+            
+            .step {
+                width: 26px;
+                height: 26px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .step-indicator {
+                gap: 3px;
+            }
+            
+            .step {
+                width: 24px;
+                height: 24px;
+                font-size: 0.8rem;
             }
         }
     </style>
