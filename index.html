@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>心动测试：他真的让你心动了吗</title>
+    <title>💖 心动指数全面评估测试</title>
     <style>
         :root {
             --primary-color: #ff6b9d;
@@ -42,7 +42,7 @@
         
         header {
             text-align: center;
-            padding: 40px 0 30px; /* 增加顶部内边距 */
+            padding: 40px 0 30px;
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             color: white;
             border-radius: var(--border-radius);
@@ -55,7 +55,7 @@
             font-size: 2.2rem;
             margin-bottom: 10px;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            padding-top: 10px; /* 为标题增加顶部内边距 */
+            padding-top: 10px;
         }
         
         .subtitle {
@@ -63,13 +63,13 @@
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
-            padding: 0 15px; /* 增加侧边内边距 */
+            padding: 0 15px;
         }
         
         .author-button {
             position: absolute;
-            top: 8px; /* 增加与顶部的距离 */
-            right: 8px; /* 增加与右侧的距离 */
+            top: 8px;
+            right: 8px;
             background-color: rgba(255, 255, 255, 0.9);
             color: #ff2442;
             border: 1px solid #ff2442;
@@ -315,6 +315,18 @@
             line-height: 1.7;
         }
         
+        .result-level {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin: 15px 0 8px;
+            color: var(--dark-color);
+        }
+        
         .step-indicator {
             display: flex;
             justify-content: center;
@@ -334,6 +346,7 @@
             font-weight: bold;
             color: white;
             flex-shrink: 0;
+            font-size: 0.85rem;
         }
         
         .step.active {
@@ -342,6 +355,13 @@
         
         .step.completed {
             background-color: var(--accent-color);
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--accent-color);
         }
         
         footer {
@@ -378,7 +398,7 @@
             }
             
             header {
-                padding: 35px 0 25px; /* 移动设备上调整内边距 */
+                padding: 35px 0 25px;
             }
             
             .step-indicator {
@@ -389,7 +409,7 @@
             .step {
                 width: 26px;
                 height: 26px;
-                font-size: 0.85rem;
+                font-size: 0.75rem;
             }
         }
         
@@ -399,9 +419,9 @@
             }
             
             .step {
-                width: 24px;
-                height: 24px;
-                font-size: 0.8rem;
+                width: 22px;
+                height: 22px;
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -410,7 +430,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>心动测试：他真的让你心动了吗</h1>
+            <h1>💖 心动指数全面评估测试</h1>
             <p class="subtitle">基于心理学理论的深度情感评估，探索你内心最真实的感觉</p>
             <!-- 小红书入口 -->
         	<div class="xiaohongshu-corner">
@@ -446,19 +466,9 @@
             <button class="start-button" id="start-button">开始测试</button>
         </section>
         
+        <div class="progress-text" id="progress-text" style="display: none;">第 <span id="current-question">1</span> 题 / 共 25 题</div>
         <div class="step-indicator" id="step-indicator" style="display: none;">
-            <div class="step active">1</div>
-            <div class="step">2</div>
-            <div class="step">3</div>
-            <div class="step">4</div>
-            <div class="step">5</div>
-            <div class="step">6</div>
-            <div class="step">7</div>
-            <div class="step">8</div>
-            <div class="step">9</div>
-            <div class="step">10</div>
-            <div class="step">11</div>
-            <div class="step">12</div>
+            <!-- 步骤将通过JavaScript动态生成 -->
         </div>
         
         <section class="question-section" id="question-section" style="display: none;">
@@ -481,8 +491,9 @@
             <div class="progress-bar">
                 <div class="progress" id="progress" style="width: 0%"></div>
             </div>
-            <h3 id="result-level"></h3>
-            <div class="result-description" id="result-description"></div>
+            <div class="result-description" id="result-description">
+                <!-- 结果内容将通过JavaScript动态生成 -->
+            </div>
             <button class="start-button" id="restart" style="margin-top: 25px;">重新测试</button>
         </section>
         
@@ -493,102 +504,265 @@
     </div>
 
     <script>
-        // 问题数据 - 使用百分制评分
+        // 问题数据 - 25道题，评分规则：A=1分，B=2分，C=3分，D=4分，E=5分
         const questions = [
+            // 第一部分：认知与注意力
             {
-                text: "在人群中突然听到他的声音或看到他的身影时，你的第一反应是？",
+                text: "我会在不经意间想起他，即使是在做其他事情的时候。",
                 options: [
-                    { text: "心跳漏了一拍，目光会不自觉地追随他", score: 100 },
-                    { text: "知道他在那儿，但内心平静，继续做自己的事", score: 50 },
-                    { text: "感到一丝想要回避的紧张", score: 0 }
+                    { text: "从未如此", score: 1 },
+                    { text: "很少这样", score: 2 },
+                    { text: "有时这样", score: 3 },
+                    { text: "经常这样", score: 4 },
+                    { text: "总是这样", score: 5 }
                 ]
             },
             {
-                text: "你们有一次非常投机的交流后，当他离开，你独自一人时，更常感到？",
+                text: "我会注意到他外表、语气或习惯上微小的变化。",
                 options: [
-                    { text: "一种持续的兴奋感，能量满满，忍不住反复回味", score: 100 },
-                    { text: "心情愉悦，但很快平静，像喝完一杯暖茶", score: 60 },
-                    { text: "如同完成一次普通社交，感到些许疲惫", score: 20 }
+                    { text: "完全注意不到", score: 1 },
+                    { text: "很少注意到", score: 2 },
+                    { text: "偶尔注意到", score: 3 },
+                    { text: "大多能注意到", score: 4 },
+                    { text: "敏锐地注意到", score: 5 }
                 ]
             },
             {
-                text: "当你意外地和他发生短暂的肢体接触（如并肩走路时手臂相擦），你通常？",
+                text: "当听到一个好笑话或看到有趣的东西时，他是我第一个想分享的人。",
                 options: [
-                    { text: "会清晰地感觉到接触的部位，心跳加速片刻", score: 100 },
-                    { text: "没什么特别的感觉，和碰到其他人一样", score: 30 },
-                    { text: "感到不适，会下意识地拉开一点距离", score: 0 }
+                    { text: "他从未是首选", score: 1 },
+                    { text: "他很少是首选", score: 2 },
+                    { text: "他有时是首选", score: 3 },
+                    { text: "他经常是首选", score: 4 },
+                    { text: "他几乎总是首选", score: 5 }
                 ]
             },
             {
-                text: "你会在做一些日常琐事时，脑海中突然毫无缘由地浮现出他的样子或他说过的话吗？",
+                text: "我会认真记住他随口提到的喜好或小事。",
                 options: [
-                    { text: "经常，他的形象会\"自动\"闯入我的思绪", score: 100 },
-                    { text: "偶尔，尤其是在看到与他相关的事物时", score: 60 },
-                    { text: "几乎从来没有过", score: 10 }
+                    { text: "完全记不住", score: 1 },
+                    { text: "很少去记", score: 2 },
+                    { text: "会记住一些", score: 3 },
+                    { text: "大部分都会记住", score: 4 },
+                    { text: "下意识就记住了", score: 5 }
                 ]
             },
             {
-                text: "当你看到有趣的视频、听到好听的歌或遇到美好的事物时，你第一个想要分享的人？",
+                text: "和他在一起时，我很少会分心去看手机或关注周围其他人。",
                 options: [
-                    { text: "经常是他，分享本身就是一种快乐", score: 100 },
-                    { text: "会想到一群好朋友，他是其中之一", score: 50 },
-                    { text: "很少或从未想到他", score: 10 }
+                    { text: "总是分心", score: 1 },
+                    { text: "经常分心", score: 2 },
+                    { text: "看情况而定", score: 3 },
+                    { text: "很少分心", score: 4 },
+                    { text: "完全投入，从不分心", score: 5 }
+                ]
+            },
+            
+            // 第二部分：情感与情绪
+            {
+                text: "他的情绪（开心或沮丧）会直接影响我当天的心情。",
+                options: [
+                    { text: "完全不受影响", score: 1 },
+                    { text: "很少受影响", score: 2 },
+                    { text: "有一定影响", score: 3 },
+                    { text: "深受影响", score: 4 },
+                    { text: "我的心情完全随他而动", score: 5 }
                 ]
             },
             {
-                text: "你如何看待了解他的过去？",
+                text: "当他取得成就时，我会感到由衷的骄傲和高兴，就像我自己成功了一样。",
                 options: [
-                    { text: "充满好奇，想知道他所有的故事和经历", score: 100 },
-                    { text: "随缘了解，他告诉我我就听着", score: 40 },
-                    { text: "没有特别想去了解的欲望", score: 0 }
+                    { text: "完全不会", score: 1 },
+                    { text: "有一点吧", score: 2 },
+                    { text: "会为他高兴", score: 3 },
+                    { text: "感到非常开心和骄傲", score: 4 },
+                    { text: "欣喜若狂，感同身受", score: 5 }
                 ]
             },
             {
-                text: "你愿意为他花费时间精力（如帮忙、准备礼物），主要是因为？",
+                text: "如果感觉到他情绪低落，我会产生强烈的冲动想去安慰和帮助他。",
                 options: [
-                    { text: "过程本身就让我感到开心和满足", score: 100 },
-                    { text: "出于朋友间的道义和礼貌", score: 50 },
-                    { text: "期望能得到他同等的回报或好感", score: 20 }
+                    { text: "完全没有冲动", score: 1 },
+                    { text: "有点想法但不会行动", score: 2 },
+                    { text: "会口头关心一下", score: 3 },
+                    { text: "会主动安慰帮助", score: 4 },
+                    { text: "非常迫切地想为他分担", score: 5 }
                 ]
             },
             {
-                text: "和他相处时，你大多数时候感觉？",
+                text: "与他见面约会前，我会感到期待和一丝紧张。",
                 options: [
-                    { text: "放松自在，可以自然地做自己", score: 100 },
-                    { text: "需要稍微\"端着\"一点，展现更好的一面", score: 60 },
-                    { text: "需要时刻思考如何表现，感到有些累", score: 20 }
+                    { text: "心如止水", score: 1 },
+                    { text: "只有一点期待", score: 2 },
+                    { text: "期待但不会紧张", score: 3 },
+                    { text: "既期待又有点紧张", score: 4 },
+                    { text: "非常期待且小鹿乱撞", score: 5 }
                 ]
             },
             {
-                text: "如果有一个绝佳的机会，可以让你知道他对你最真实的看法，且绝不会被他发现，你会？",
+                text: "当有其他异性与他表现亲密时，我会感到嫉妒或不安。",
                 options: [
-                    { text: "非常想知道，这对我很重要", score: 100 },
-                    { text: "有点好奇，但不知道也无所谓", score: 40 },
-                    { text: "完全不想知道，怕破坏现在的关系", score: 10 }
+                    { text: "完全无所谓", score: 1 },
+                    { text: "几乎不在意", score: 2 },
+                    { text: "会有一点在意", score: 3 },
+                    { text: "会感到明显不舒服", score: 4 },
+                    { text: "会感到非常嫉妒和不安", score: 5 }
+                ]
+            },
+            
+            // 第三部分：行为与动机
+            {
+                text: "我愿意为他付出我的时间、精力或资源，且不觉得是负担。",
+                options: [
+                    { text: "极不愿意", score: 1 },
+                    { text: "不太愿意", score: 2 },
+                    { text: "看情况愿意", score: 3 },
+                    { text: "比较愿意", score: 4 },
+                    { text: "非常乐意，心甘情愿", score: 5 }
                 ]
             },
             {
-                text: "当你畅想一年后的生活时，你想象他在你生活中的角色更接近于？",
+                text: "我愿意向他展示我真实的一面，包括我的弱点、糗事和不完美。",
                 options: [
-                    { text: "一个模糊但期待存在的\"伙伴\"形象", score: 100 },
-                    { text: "一个和现在关系一样的朋友", score: 50 },
-                    { text: "想象不出来，或者他根本不在我的未来图景里", score: 10 }
+                    { text: "完全不愿意", score: 1 },
+                    { text: "只愿意展示好的一面", score: 2 },
+                    { text: "可能会透露一点", score: 3 },
+                    { text: "愿意展示大部分", score: 4 },
+                    { text: "完全愿意，毫无保留", score: 5 }
                 ]
             },
             {
-                text: "如果有一个非常吸引你的出国交流机会，但你知道这意味着在关键时期会与他长期分离，你的第一反应是？",
+                text: "当他需要帮助时，即使会给我带来一些麻烦，我也愿意伸出援手。",
                 options: [
-                    { text: "非常纠结，会认真权衡，甚至可能因为他不去", score: 100 },
-                    { text: "会选择去，但会积极与他保持联系，希望关系能维持", score: 60 },
-                    { text: "毫不犹豫地去，他不构成一个需要纠结的因素", score: 10 }
+                    { text: "绝对不愿意", score: 1 },
+                    { text: "可能不会", score: 2 },
+                    { text: "视麻烦程度而定", score: 3 },
+                    { text: "大多情况下愿意", score: 4 },
+                    { text: "无论如何都愿意", score: 5 }
                 ]
             },
             {
-                text: "在你心中，他的形象更接近于？",
+                text: "我会因为他而尝试一些他喜欢、但我原本不感兴趣的活动或事物。",
                 options: [
-                    { text: "一个立体的、鲜活的人，有光芒也有阴影", score: 100 },
-                    { text: "一个优点很突出，缺点不明显的人", score: 60 },
-                    { text: "一个印象有些模糊的、标签化的人", score: 20 }
+                    { text: "绝不可能", score: 1 },
+                    { text: "可能性很低", score: 2 },
+                    { text: "也许会试试", score: 3 },
+                    { text: "很有兴趣尝试", score: 4 },
+                    { text: "非常乐意去了解他的世界", score: 5 }
+                ]
+            },
+            {
+                text: "在人群中，我的目光会不自觉地寻找他。",
+                options: [
+                    { text: "从不寻找", score: 1 },
+                    { text: "很少寻找", score: 2 },
+                    { text: "偶尔会找", score: 3 },
+                    { text: "经常寻找", score: 4 },
+                    { text: "目光总会锁定他", score: 5 }
+                ]
+            },
+            
+            // 第四部分：接纳与包容度
+            {
+                text: "我了解他的缺点，但我认为这些缺点是他整体的一部分，我可以接受。",
+                options: [
+                    { text: "完全无法接受", score: 1 },
+                    { text: "比较介意", score: 2 },
+                    { text: "勉强可以接受", score: 3 },
+                    { text: "基本能接受", score: 4 },
+                    { text: "完全接纳，包括缺点", score: 5 }
+                ]
+            },
+            {
+                text: "我不会试图按照我的理想去改变他。",
+                options: [
+                    { text: "非常想改变他", score: 1 },
+                    { text: "有些地方希望他改", score: 2 },
+                    { text: "没仔细想过", score: 3 },
+                    { text: "基本没想过去改变", score: 4 },
+                    { text: "从未想过改变他", score: 5 }
+                ]
+            },
+            {
+                text: "当我和他意见不合时，我仍然愿意倾听并尊重他的观点。",
+                options: [
+                    { text: "完全不想听", score: 1 },
+                    { text: "很难听进去", score: 2 },
+                    { text: "会听但坚持己见", score: 3 },
+                    { text: "愿意倾听并思考", score: 4 },
+                    { text: "非常重视他的观点", score: 5 }
+                ]
+            },
+            {
+                text: "即使他做了让我不开心的事，我也比较容易原谅他。",
+                options: [
+                    { text: "耿耿于怀，很难原谅", score: 1 },
+                    { text: "需要很长时间平复", score: 2 },
+                    { text: "看事情严重性", score: 3 },
+                    { text: "比较容易原谅", score: 4 },
+                    { text: "几乎不会真的生气", score: 5 }
+                ]
+            },
+            {
+                text: "我觉得他\"真实、自然\"的样子，比他\"刻意营造完美形象\"的样子更吸引我。",
+                options: [
+                    { text: "更喜欢他完美的样子", score: 1 },
+                    { text: "差不多", score: 2 },
+                    { text: "有一点偏向真实", score: 3 },
+                    { text: "明显更喜欢真实的他", score: 4 },
+                    { text: "只为真实的他着迷", score: 5 }
+                ]
+            },
+            
+            // 第五部分：未来与亲密感
+            {
+                text: "我会在想象未来的画面时，不自觉地把他纳入其中。",
+                options: [
+                    { text: "从未想过", score: 1 },
+                    { text: "极少会想到", score: 2 },
+                    { text: "偶尔会闪过念头", score: 3 },
+                    { text: "经常这样想象", score: 4 },
+                    { text: "他已是我未来的一部分", score: 5 }
+                ]
+            },
+            {
+                text: "我认为他是一个值得信赖和依靠的人。",
+                options: [
+                    { text: "完全不可靠", score: 1 },
+                    { text: "不太可靠", score: 2 },
+                    { text: "一般般", score: 3 },
+                    { text: "比较可靠", score: 4 },
+                    { text: "完全值得托付", score: 5 }
+                ]
+            },
+            {
+                text: "我对他有身体亲近的欲望（如牵手、拥抱），并且觉得这是自然而美好的。",
+                options: [
+                    { text: "完全没有欲望", score: 1 },
+                    { text: "几乎没想过", score: 2 },
+                    { text: "可以接受", score: 3 },
+                    { text: "有较强的欲望", score: 4 },
+                    { text: "有强烈且美好的渴望", score: 5 }
+                ]
+            },
+            {
+                text: "当我规划一个重要人生决定时，我会考虑他的存在或他的意见。",
+                options: [
+                    { text: "完全不会考虑", score: 1 },
+                    { text: "很少考虑", score: 2 },
+                    { text: "可能会想一下", score: 3 },
+                    { text: "会认真考虑", score: 4 },
+                    { text: "他是重要的考量因素", score: 5 }
+                ]
+            },
+            {
+                text: "当我们沉默待在一起时，我不会感到尴尬，而是觉得舒适和安心。",
+                options: [
+                    { text: "非常尴尬", score: 1 },
+                    { text: "有点不自在", score: 2 },
+                    { text: "没什么特别感觉", score: 3 },
+                    { text: "感到舒适", score: 4 },
+                    { text: "感到无比安心和惬意", score: 5 }
                 ]
             }
         ];
@@ -602,6 +776,8 @@
         // DOM 元素
         const introSection = document.getElementById('intro-section');
         const startButton = document.getElementById('start-button');
+        const progressText = document.getElementById('progress-text');
+        const currentQuestionSpan = document.getElementById('current-question');
         const stepIndicator = document.getElementById('step-indicator');
         const questionSection = document.getElementById('question-section');
         const questionText = document.getElementById('question-text');
@@ -611,7 +787,6 @@
         const resultSection = document.getElementById('result-section');
         const scoreDisplay = document.getElementById('score');
         const progressBar = document.getElementById('progress');
-        const resultLevel = document.getElementById('result-level');
         const resultDescription = document.getElementById('result-description');
         const restartBtn = document.getElementById('restart');
 
@@ -628,11 +803,26 @@
             
             // 重新测试按钮
             restartBtn.addEventListener('click', restartTest);
+            
+            // 初始化步骤指示器
+            initStepIndicator();
         });
+
+        // 初始化步骤指示器
+        function initStepIndicator() {
+            stepIndicator.innerHTML = '';
+            for (let i = 0; i < questions.length; i++) {
+                const step = document.createElement('div');
+                step.className = 'step';
+                step.textContent = i + 1;
+                stepIndicator.appendChild(step);
+            }
+        }
 
         // 开始测试
         function startTest() {
             introSection.style.display = 'none';
+            progressText.style.display = 'block';
             stepIndicator.style.display = 'flex';
             questionSection.style.display = 'flex';
             showQuestion(0);
@@ -642,6 +832,9 @@
         function showQuestion(index) {
             currentQuestionIndex = index;
             const question = questions[index];
+            
+            // 更新进度文本
+            currentQuestionSpan.textContent = index + 1;
             
             // 更新问题文本
             questionText.textContent = question.text;
@@ -728,6 +921,7 @@
                 calculateResult();
                 questionSection.style.display = 'none';
                 stepIndicator.style.display = 'none';
+                progressText.style.display = 'none';
                 resultSection.style.display = 'block';
             }
         }
@@ -754,34 +948,104 @@
                 }
             });
             
-            // 计算百分制平均分
-            const percentScore = Math.round(totalScore / questions.length);
+            // 显示原始总分
+            scoreDisplay.textContent = totalScore;
             
-            // 显示分数
-            scoreDisplay.textContent = percentScore;
-            
-            // 计算进度条百分比
+            // 计算进度条百分比（将25-125映射到0-100）
+            const percentScore = (totalScore - 25) / (125 - 25) * 100;
             progressBar.style.width = `${percentScore}%`;
             
             // 根据分数显示不同结果
             let level, description;
             
-            if (percentScore >= 80) {
+            if (totalScore >= 105) {
+                level = "完美心动";
+                description = `
+                    <div class="result-level">【完美心动】</div>
+                    <div class="section-title">心理状态：</div>
+                    <p>成熟、深刻的爱，达到"圆满之爱"的理想状态。</p>
+                    <div class="section-title">心理学解读：</div>
+                    <p>你的感情达到了斯腾伯格理论的顶峰——"圆满之爱"，即亲密、激情和承诺三者的完美结合。这是一种经过认知评估后坚定的决策承诺，而不仅仅是感觉。你们在认知上形成了一个"共有关系"，愿意为对方付出而不求即时回报，真正做到了"我们"大于"我"。</p>
+                    <div class="section-title">核心特征：</div>
+                    <p>全然的接纳、信任与承诺，关系稳定而深厚，具备共同创造未来的强大能力。</p>
+                    <div class="section-title">行动建议：</div>
+                    <ul>
+                        <li><strong>用心经营：</strong>爱情不是终点，而是起点。需要通过持续的浪漫、有效的沟通和共同的仪式感来精心维护。</li>
+                        <li><strong>保持独立：</strong>在最紧密的联结中，依然保有独立的自我和边界，是关系健康长久的秘诀。</li>
+                        <li><strong>共同叙事：</strong>一起创造和讲述你们"爱情故事"，这能极大地增强关系的内在意义和韧性。</li>
+                    </ul>
+                `;
+            } else if (totalScore >= 80) {
                 level = "深度心动";
-                description = "你的内心世界早已被他深深占据。他不仅能轻易拨动你的心弦，引发强烈的情绪波动，更成为了你思维中一个活跃的'常住客'。你对他有着极高的信任感和接纳度，愿意向他展示最真实的自己。更重要的是，你的潜意识已经将他编织进你对未来的想象之中。这是一种强烈、自发且深入的情感，充满了生命的能量和可能性。";
-            } else if (percentScore >= 60) {
-                level = "明确好感";
-                description = "你对他的喜欢是清晰而确定的。他带给你温暖和愉悦，你享受与他相处的时光，并愿意为他投入时间和精力。你的思绪会时常飘向他，但理性仍占据一席之地。你们之间建立了良好的情感联结，但可能尚在观察或加深了解的阶段。这是一段健康感情的坚实基础，充满了向更深处发展的潜力。";
-            } else if (percentScore >= 40) {
-                level = "浅浅好感";
-                description = "你欣赏他，认为他是一个不错的人，与他相处让你感到舒适。但这种感觉更多停留在理性认可的层面，缺乏那种难以自持的吸引和冲动。他在你心中更像一个'特别的朋友'，而非一个让你朝思暮想的恋人。你的情感投入是有限和有所保留的，内心的大门尚未完全向他敞开。";
+                description = `
+                    <div class="result-level">【深度心动】</div>
+                    <div class="section-title">心理状态：</div>
+                    <p>热烈的喜欢与初期的爱，关系高度亲密。</p>
+                    <div class="section-title">心理学解读：</div>
+                    <p>你体验到了斯腾伯格理论中的 "浪漫之爱" （亲密+激情）。对方已成为你的"安全基地"——提供情感慰藉，和"探索平台"——鼓励你向外发展。你们之间建立了高度的"相互依存"，共享许多生活与情感资源。承诺感正在迅速增长。</p>
+                    <div class="section-title">核心特征：</div>
+                    <p>高度亲密、信任与激情，有强烈的排他性，未来规划中已有对方的位置。</p>
+                    <div class="section-title">行动建议：</div>
+                    <ul>
+                        <li><strong>深化承诺：</strong>讨论关系的排他性，并对未来进行更具体的规划。</li>
+                        <li><strong>解决冲突：</strong>学习健康的冲突解决模式，这是关系能否长久的关键。</li>
+                        <li><strong>共同成长：</strong>设立共同目标，让关系成为推动彼此进步的积极力量，而不仅仅是情感慰藉。</li>
+                    </ul>
+                `;
+            } else if (totalScore >= 60) {
+                level = "比较心动";
+                description = `
+                    <div class="result-level">【比较心动】</div>
+                    <div class="section-title">心理状态：</div>
+                    <p>强烈的喜欢，情感投入显著增加。</p>
+                    <div class="section-title">心理学解读：</div>
+                    <p>你正处在斯腾伯格"爱情三角理论"中的 "喜欢之爱" （主要是亲密感）或 "迷恋之爱" （主要是激情）的阶段。你的依恋系统已完全激活，会主动寻求亲近，并因他产生明显的情绪波动。你开始将他纳入你的"自我概念"，即你的部分身份开始与"我们"产生关联。</p>
+                    <div class="section-title">核心特征：</div>
+                    <p>情感投入度高，情绪易受牵动，有较强的亲近欲望和占有欲。</p>
+                    <div class="section-title">行动建议：</div>
+                    <ul>
+                        <li><strong>推进关系：</strong>这是将好感升级为恋情的关键时期。可以通过更直接的言语或行动（如单独邀约、真诚赞美）表达你的兴趣。</li>
+                        <li><strong>现实检验：</strong>一起完成一项任务或经历一次轻度压力事件，观察彼此的应对方式和契合度。</li>
+                        <li><strong>保持清醒：</strong>警惕"光环效应"，不要因为喜欢而放大他的优点、忽略缺点。</li>
+                    </ul>
+                `;
+            } else if (totalScore >= 40) {
+                level = "浅浅心动";
+                description = `
+                    <div class="result-level">【浅浅心动】</div>
+                    <div class="section-title">心理状态：</div>
+                    <p>明确的好感与兴趣，处于关系探索期。</p>
+                    <div class="section-title">心理学解读：</div>
+                    <p>你体验到了明确的"人际吸引力"，这可能源于他的外表、才华或与你的相似性。大脑的奖赏系统开始被轻微激活，想到他时会带来愉悦感。你开始有意识地进行"社会比较"，评估他作为潜在伴侣的价值，但投入和承诺水平很低。</p>
+                    <div class="section-title">核心特征：</div>
+                    <p>有积极的印象和喜欢的感觉，会主动关注，但情感卷入度不深，可替代性较强。</p>
+                    <div class="section-title">行动建议：</div>
+                    <ul>
+                        <li><strong>增加互动：</strong>创造更多群体或一对一的交流机会，进行更深度的"自我暴露"，以检验好感的持久性。</li>
+                        <li><strong>理性评估：</strong>分析你喜欢的是他真实的人格，还是你投射在他身上的理想化形象。</li>
+                        <li><strong>享受暧昧：</strong>这个阶段充满不确定性也充满乐趣，不必急于定义关系。</li>
+                    </ul>
+                `;
             } else {
-                level = "基本无感";
-                description = "综合来看，你的内心深处并未将他识别为一个能引发浪漫情感的独特对象。你们的交集更多停留在友好的社交层面，他并未在你情绪、思维和行为的方方面面留下深刻的印记。你对他的关注，可能源于习惯、环境或其他非情感因素。你的心湖，因他而泛起的涟漪微乎其微。";
+                level = "完全无感";
+                description = `
+                    <div class="result-level">【完全无感】</div>
+                    <div class="section-title">心理状态：</div>
+                    <p>人际吸引的初始阶段或纯粹的社交关系。</p>
+                    <div class="section-title">心理学解读：</div>
+                    <p>你对他的感受更接近"单纯曝光效应"——仅仅因为熟悉而产生的好感，或是在特定情境下的短暂欣赏。他尚未激活你的依恋系统，在你的"心理地图"中，他处于普通朋友或熟人的位置。你的情绪和认知资源很少会主动分配给他。</p>
+                    <div class="section-title">核心特征：</div>
+                    <p>情感投入度极低，存在感弱，几乎不影响你的情绪与行为。</p>
+                    <div class="section-title">行动建议：</div>
+                    <ul>
+                        <li><strong>保持现状：</strong>无需刻意推进，享受自然的社交互动即可。</li>
+                        <li><strong>深度观察：</strong>思考是否因社交圈狭窄而过度关注了有限的选项。</li>
+                        <li><strong>关键自检：</strong>"如果他从我的生活中消失，我是否会感到失落？"如果答案是否定的，那么你的情感确实处于初始阶段。</li>
+                    </ul>
+                `;
             }
             
-            resultLevel.textContent = level;
-            resultDescription.textContent = description;
+            resultDescription.innerHTML = description;
         }
 
         // 重新测试
